@@ -3,11 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PWA Example</title>
     <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="favicon.ico">
+    <title>Quickly - PWA Interface</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        header { background: #4CAF50; color: white; padding: 10px; text-align: center; }
+        .features { margin: 20px; }
+        .feature { margin-bottom: 10px; }
+        footer { background: #333; color: white; text-align: center; padding: 10px; position: fixed; width: 100%; bottom: 0; }
+    </style>
 </head>
 <body>
-    <h1>Welcome to the Progressive Web App!</h1>
-    <script src="app.js"></script>
+
+<header>
+    <h1>Welcome to Quickly!</h1>
+    <p>A Progressive Web App to enhance your productivity.</p>
+</header>
+
+<section class="features">
+    <h2>Features</h2>
+    <div class="feature">- Fast and reliable</div>
+    <div class="feature">- Offline capabilities</div>
+    <div class="feature">- Push notifications</div>
+</section>
+
+<button id="installBtn" style="margin:20px; padding:10px;">Install App</button>
+
+<footer>
+    <p>&copy; 2026 Quickly. All rights reserved.</p>
+</footer>
+
+<script>
+    let deferredPrompt;
+    const installBtn = document.getElementById('installBtn');
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        installBtn.style.display = 'block';
+    });
+
+    installBtn.addEventListener('click', async () => {
+        installBtn.style.display = 'none';
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') {
+            console.log('User accepted the A2HS prompt');
+        } else {
+            console.log('User dismissed the A2HS prompt');
+        }
+        deferredPrompt = null;
+    });
+</script>
+
 </body>
 </html>
